@@ -1,0 +1,54 @@
+<Window x:Class="WinShot.Views.RegionSelectWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WinShot — Select Region"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        Cursor="Cross"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True">
+    <!--
+        This window is sized and positioned in code-behind to exactly cover
+        the virtual screen (all monitors). We paint the frozen screenshot as
+        the background and draw a dim veil over it; the drag rectangle
+        "punches through" to the unveiled image for that region.
+    -->
+    <Grid x:Name="RootGrid">
+        <!-- 1. Crisp copy of the desktop frozen at capture-time -->
+        <Image x:Name="BackgroundImage" Stretch="None" />
+
+        <!-- 2. Dim veil. A semi-transparent black rectangle; the selection
+                rectangle below will cut a "hole" out of it using OpacityMask. -->
+        <Rectangle x:Name="DimVeil" Fill="#7F000000" IsHitTestVisible="False"/>
+
+        <!-- 3. Live selection rectangle -->
+        <Canvas x:Name="SelectionLayer">
+            <Rectangle x:Name="SelectionRect"
+                       Stroke="#4F8EF7"
+                       StrokeThickness="1.5"
+                       Fill="Transparent"
+                       Visibility="Collapsed"/>
+            <!-- Dimension readout that follows the cursor -->
+            <Border x:Name="SizeReadout"
+                    Background="#CC000000"
+                    CornerRadius="3"
+                    Padding="6,3"
+                    Visibility="Collapsed">
+                <TextBlock x:Name="SizeText" Foreground="White" FontFamily="Consolas" FontSize="12"/>
+            </Border>
+        </Canvas>
+
+        <!-- 4. Bottom-center hint -->
+        <Border HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,32"
+                Background="#CC000000" CornerRadius="6" Padding="12,6"
+                IsHitTestVisible="False">
+            <TextBlock Foreground="White" FontSize="13">
+                Drag to select a region &#8226; ESC to cancel
+            </TextBlock>
+        </Border>
+    </Grid>
+</Window>
